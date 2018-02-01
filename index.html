@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.5.6/Rx.js"></script>
+</head>
+<body>
+    <button id='btn' class='c_large'>Click</button>
+ 
+    <ul>
+        <li>单个 events > 多个event - list/array like</li>
+        <li>S1,S2,S3 = (E1,E2,E3...) | f1 |f2 |f3    </li>
+        <li> events/数据s
+           <ul><li>Event = Data</li>
+               <li>multi Event = Array</li>
+               <li>Event Stream = never-ending Array</li>
+            </ul>
+        </li>
+        <li> 业务逻辑 > filter/map/数据转换fn
+            <ul>
+                <li>多个转换fn</li>
+                <li>Chaining/Pipeline</li>
+                <li>类似Excel formuler Chaining</li>
+                <li>each step is simple</li>
+            </ul>
+        </li>
+        <li>副作用 Side Effect
+            <ul>
+            <li>E1 > f1 | f2 |f3 | fn = S1 </li>
+            <li>与 Sync/LinQ不同，单个E1 纵穿所有fn 生成 SideEffect </li>
+            <li>Sync是 处理（f1) 所有输入E1-En,  一次一步  </li>
+        </ul>
+        </li>
+        <li> temporal business
+            <ul>
+                <li>第1次，第n次，单数次</li>
+                <li>比之前增加，减少（n，n-1) </li>
+                <li>与之前不同 distinct </li>
+                <li>1分钟内 login 100次 </li>
+            </ul>
+        </li>
+    </ul>
+ 
+    <script>
+        var btn= document.getElementById('btn');
+        var obsv = Rx.Observable.fromEvent(btn, 'click');
+ 
+        obsv
+         .map(function mapper(evt){
+             return evt.target.className; })
+        .filter(function(cn){
+            return /c_/.test(cn); })
+        //.distinctUntilChanged()
+        .subscribe(function(data){
+            console.log(data);
+        })
+       
+    </script>
+</body>
+</html>
